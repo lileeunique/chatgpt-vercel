@@ -2,6 +2,7 @@
 @import url(./tooltip.css);
 @import url(./message.css);
 @import url(./clipboard.css);
+@import url(./mobile.css);
 
 ::-webkit-scrollbar {
   width: 6px;
