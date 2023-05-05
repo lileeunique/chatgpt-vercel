@@ -110,7 +110,8 @@ export default function ({
     (value: string) => {
       if (/^\s{2,}$|^\/{2,}$/.test(value))
         return setCandidateOptions(FZFData.sessionOptions)
-      if (value === "/" || value === " ")
+//<!--       if (value === "/" || value === " ") -->
+    if (value === "/")
         return setCandidateOptions(FZFData.promptOptions)
 
       const sessionQuery = value.replace(
