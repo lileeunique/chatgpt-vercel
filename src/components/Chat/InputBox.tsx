@@ -115,11 +115,10 @@ export default function ({
     if (value === "/")
         return setCandidateOptions(FZFData.promptOptions)
 
-      const sessionQuery = value.replace(
-        /^\s{2,}(.*)\s*$|^\/{2,}(.*)\s*$/,
-        "$1$2"
-      )
-      const promptQuery = value.replace(/^\s(.*)\s*$|^\/(.*)\s*$/, "$1$2")
+    //const sessionQuery = value.replace(/^\s{2,}(.*)\s*$|^\/{2,}(.*)\s*$/,"$1$2")
+    const sessionQuery = value.replace(/^\/{2,}(.*)\s*$/,"$1$2")
+    //const promptQuery = value.replace(/^\s(.*)\s*$|^\/(.*)\s*$/, "$1$2")
+    const promptQuery = value.replace(/^\/(.*)\s*$/, "$1$2")
       if (sessionQuery !== value) {
         setCandidateOptions(
           FZFData.fzfSessions!.find(sessionQuery).map(k => ({
