@@ -19,9 +19,9 @@ export const defaultEnv = {
     APIModel: "gpt-3.5-turbo" as Model
   },
   CLIENT_DEFAULT_MESSAGE: `
-- 点击头像，锁定对话作为角色设定。
+- 点击头像将对话锁定作为设定角色。
 - [[/]] 选择 Prompt 预设。[[/]][[/]] 切换对话、搜索历史。
-- [[↑]] 编辑最近一次提问。[[Shift]] + [[Enter]] 换行。
+- [[↑]] 编辑最近一次提问。[[Shift]][[Enter]] 换行。
 `,
   CLIENT_MAX_INPUT_TOKENS: {
     "gpt-3.5-turbo": 4 * 1024,

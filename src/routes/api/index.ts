@@ -88,7 +88,7 @@ export async function POST({ request }: APIEvent) {
 
     const apiKey = randomKey(splitKeys(key))
 
-    if (!apiKey) throw new Error("应用接口密钥无效。")
+    if (!apiKey) throw new Error("无效的应用接口密钥。")
 
     const encoder = new TextEncoder()
     const decoder = new TextDecoder()
