@@ -76,7 +76,7 @@ export default function SettingAction() {
                 }}
               />
             </SettingItem>
-            <SettingItem icon="i-carbon:api" label="OpenAI Key">
+            <SettingItem icon="i-carbon:api" label="应用接口密钥">
               <input
                 type="password"
                 value={store.globalSettings.APIKey}
@@ -128,7 +128,7 @@ export default function SettingAction() {
             </Show>
             <SettingItem
               icon="i-carbon:machine-learning-model"
-              label="OpenAI 模型"
+              label="对话模型选择"
             >
               <Selector
                 class="max-w-150px"
@@ -410,7 +410,7 @@ async function exportJpg() {
       const url = await toJpeg(messageContainer)
       const a = document.createElement("a")
       a.href = url
-      a.download = `ChatGPT-${dateFormat(new Date(), "HH-MM-SS")}.jpg`
+      a.download = `ChatSearch-${dateFormat(new Date(), "HH-MM-SS")}.jpg`
       a.click()
     }
     if (!isMobile() && navigator.clipboard) {
@@ -459,7 +459,7 @@ async function exportData() {
   a.href = URL.createObjectURL(
     new Blob([JSON.stringify(localStorage)], { type: "application/json" })
   )
-  a.download = `ChatGPT-${dateFormat(new Date(), "HH-MM-SS")}.json`
+  a.download = `ChatSearch-${dateFormat(new Date(), "HH-MM-SS")}.json`
   a.click()
 }
 

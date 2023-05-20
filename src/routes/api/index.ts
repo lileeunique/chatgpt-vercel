@@ -40,8 +40,8 @@ export const baseURL =
   process.env.NO_GFW !== "false"
     ? defaultEnv.OPENAI_API_BASE_URL
     : (
-        process.env.OPENAI_API_BASE_URL || defaultEnv.OPENAI_API_BASE_URL
-      ).replace(/^https?:\/\//, "")
+      process.env.OPENAI_API_BASE_URL || defaultEnv.OPENAI_API_BASE_URL
+    ).replace(/^https?:\/\//, "")
 
 // + 作用是将字符串转换为数字
 const timeout = isNaN(+process.env.TIMEOUT!)
@@ -76,7 +76,7 @@ export async function POST({ request }: APIEvent) {
           )
           return new Response(await genBillingsTable(billings))
         } else {
-          throw new Error("没有填写 OpenAI API key，不会查询内置的 Key。")
+          throw new Error("未填写应用接口密钥。")
         }
       } else if (content.startsWith("sk-")) {
         const billings = await Promise.all(
@@ -88,7 +88,7 @@ export async function POST({ request }: APIEvent) {
 
     const apiKey = randomKey(splitKeys(key))
 
-    if (!apiKey) throw new Error("没有填写 OpenAI API key，或者 key 填写错误。")
+    if (!apiKey) throw new Error("应用接口密钥无效。")
 
     const encoder = new TextEncoder()
     const decoder = new TextDecoder()
