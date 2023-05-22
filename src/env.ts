@@ -8,7 +8,8 @@ export const defaultEnv = {
   CLIENT_GLOBAL_SETTINGS: {
     APIKey: "",
     password: "",
-    enterToSend: true
+    enterToSend: true,
+    DarkTheme: false
   },
   CLIENT_SESSION_SETTINGS: {
     // 0-2
@@ -20,7 +21,7 @@ export const defaultEnv = {
   },
   CLIENT_DEFAULT_MESSAGE: `
 - 点击头像将对话锁定作为设定角色。
-- [[/]] 选择 Prompt 预设。[[/]][[/]] 切换对话、搜索历史。
+- [[/]] 选择 Prompt 预设。[[/]][[/]] 切换对话。
 - [[↑]] 编辑最近一次提问。[[Shift]][[Enter]] 换行。
 `,
   CLIENT_MAX_INPUT_TOKENS: {

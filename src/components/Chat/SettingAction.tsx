@@ -16,6 +16,7 @@ import {
 } from "~/utils"
 import { Selector, Switch as SwitchButton } from "../Common"
 import { useNavigate } from "solid-start"
+import { handleToggleTheme } from "../ThemeToggle"
 
 export const [actionState, setActionState] = createStore({
   showSetting: "none" as "none" | "global" | "session",
@@ -88,6 +89,12 @@ export default function SettingAction() {
                     (e.target as HTMLInputElement).value
                   )
                 }}
+              />
+            </SettingItem>
+            <SettingItem icon="i-carbon:settings" label="深色主题">
+              <SwitchButton
+                checked={store.globalSettings.DarkTheme}
+                onChange={handleToggleTheme}
               />
             </SettingItem>
             <SettingItem icon="i-carbon:keyboard" label="Enter 键发送消息">

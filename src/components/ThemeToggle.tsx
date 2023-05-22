@@ -1,6 +1,19 @@
 import { usePrefersDark } from "@solid-primitives/media"
 import { createEffect } from "solid-js"
 import { LocalStorageKey } from "~/types"
+import { RootStore } from "~/store"
+
+export function handleToggleTheme() {
+  const { setStore } = RootStore
+  const element = document.documentElement
+  element.classList.toggle("dark")
+  const isDark = element.classList.contains("dark")
+  document
+    ?.querySelector('meta[name="theme-color"]')
+    ?.setAttribute("content", isDark ? "#16161a" : "#f6f8fa")
+  localStorage.setItem(LocalStorageKey.THEME, isDark ? "dark" : "light")
+  setStore("globalSettings", "DarkTheme", isDark)
+}
 
 export default function ThemeToggle() {
   const prefersDark = usePrefersDark()
@@ -14,16 +27,6 @@ export default function ThemeToggle() {
   createEffect(() => {
     !localStorage.getItem(LocalStorageKey.THEME) && toggle(prefersDark())
   })
-
-  function handleToggleTheme() {
-    const element = document.documentElement
-    element.classList.toggle("dark")
-    const isDark = element.classList.contains("dark")
-    document
-      ?.querySelector('meta[name="theme-color"]')
-      ?.setAttribute("content", isDark ? "#16161a" : "#f6f8fa")
-    localStorage.setItem(LocalStorageKey.THEME, isDark ? "dark" : "light")
-  }
 
   return (
     <button
