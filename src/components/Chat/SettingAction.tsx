@@ -250,28 +250,6 @@ export default function SettingAction() {
                 label="伪装角色"
               />
               <ActionItem
-                onClick={async () => {
-                  setActionState("genImg", "loading")
-                  await exportJpg()
-                  setTimeout(() => setActionState("genImg", "normal"), 1000)
-                }}
-                icon={imgIcons[actionState.genImg]}
-                label="导出图片"
-              />
-              <ActionItem
-                label="导出MD"
-                onClick={async () => {
-                  await exportMD(store.messageList)
-                  setActionState("success", "markdown")
-                  setTimeout(() => setActionState("success", false), 1000)
-                }}
-                icon={
-                  actionState.success === "markdown"
-                    ? "i-carbon:status-resolved dark:text-yellow text-yellow-6"
-                    : "i-ri:markdown-line"
-                }
-              />
-              <ActionItem
                 onClick={() => {
                   if (actionState.clearSessionConfirm) {
                     clearSession()
@@ -290,6 +268,27 @@ export default function SettingAction() {
                     : "i-carbon:clean"
                 }
                 label={actionState.clearSessionConfirm ? "确定" : "清空对话"}
+              />
+              <ActionItem
+                onClick={() => {
+                  let sessionID: string
+                  do {
+                    sessionID = generateId()
+                  } while (getSession(sessionID))
+                  setSession(sessionID, {
+                    id: sessionID,
+                    lastVisit: Date.now(),
+                    settings: {
+                      ...defaultEnv.CLIENT_SESSION_SETTINGS,
+                      title: "新的对话"
+                    },
+                    messages: []
+                  })
+                  navigator(`/session/${sessionID}`)
+                  loadSession(sessionID)
+                }}
+                icon="i-carbon:add-alt"
+                label="新的对话"
               />
             </div>
           }
@@ -311,25 +310,26 @@ export default function SettingAction() {
           <Match when={actionState.showSetting === "session"}>
             <div class="flex">
               <ActionItem
-                onClick={() => {
-                  let sessionID: string
-                  do {
-                    sessionID = generateId()
-                  } while (getSession(sessionID))
-                  setSession(sessionID, {
-                    id: sessionID,
-                    lastVisit: Date.now(),
-                    settings: {
-                      ...defaultEnv.CLIENT_SESSION_SETTINGS,
-                      title: "新的对话"
-                    },
-                    messages: []
-                  })
-                  navigator(`/session/${sessionID}`)
-                  loadSession(sessionID)
+                onClick={async () => {
+                  setActionState("genImg", "loading")
+                  await exportJpg()
+                  setTimeout(() => setActionState("genImg", "normal"), 1000)
                 }}
-                icon="i-carbon:add-alt"
-                label="新的对话"
+                icon={imgIcons[actionState.genImg]}
+                label="导出图片"
+              />
+              <ActionItem
+                label="导出MD"
+                onClick={async () => {
+                  await exportMD(store.messageList)
+                  setActionState("success", "markdown")
+                  setTimeout(() => setActionState("success", false), 1000)
+                }}
+                icon={
+                  actionState.success === "markdown"
+                    ? "i-carbon:status-resolved dark:text-yellow text-yellow-6"
+                    : "i-ri:markdown-line"
+                }
               />
               <Show when={store.sessionId !== "index"}>
                 <ActionItem
