@@ -108,17 +108,16 @@ export default function ({
 
   const searchOptions = throttle(
     (value: string) => {
-    //if (/^\s{2,}$|^\/{2,}$/.test(value))
-    if (/^\/{2,}$/.test(value))
+      //if (/^\s{2,}$|^\/{2,}$/.test(value))
+      if (/^\/{2,}$/.test(value))
         return setCandidateOptions(FZFData.sessionOptions)
-    // if (value === "/" || value === " ")
-    if (value === "/")
-        return setCandidateOptions(FZFData.promptOptions)
+      // if (value === "/" || value === " ")
+      if (value === "/") return setCandidateOptions(FZFData.promptOptions)
 
-    //const sessionQuery = value.replace(/^\s{2,}(.*)\s*$|^\/{2,}(.*)\s*$/,"$1$2")
-    const sessionQuery = value.replace(/^\/{2,}(.*)\s*$/,"$1$2")
-    //const promptQuery = value.replace(/^\s(.*)\s*$|^\/(.*)\s*$/, "$1$2")
-    const promptQuery = value.replace(/^\/(.*)\s*$/, "$1$2")
+      //const sessionQuery = value.replace(/^\s{2,}(.*)\s*$|^\/{2,}(.*)\s*$/,"$1$2")
+      const sessionQuery = value.replace(/^\/{2,}(.*)\s*$/, "$1$2")
+      //const promptQuery = value.replace(/^\s(.*)\s*$|^\/(.*)\s*$/, "$1$2")
+      const promptQuery = value.replace(/^\/(.*)\s*$/, "$1$2")
       if (sessionQuery !== value) {
         setCandidateOptions(
           FZFData.fzfSessions!.find(sessionQuery).map(k => ({
@@ -184,7 +183,7 @@ export default function ({
               onClick={stopStreamFetch}
             >
               <span class="dark:text-slate text-slate-7">
-                AI 正在思考 / {store.currentMessageToken} / $
+                正在生成 / {store.currentMessageToken} / $
                 {store.currentMessageToken$.toFixed(4)}
               </span>
             </div>
@@ -198,7 +197,7 @@ export default function ({
             <textarea
               ref={el => setStore("inputRef", el)}
               id="input"
-              placeholder="与 ta 对话吧"
+              placeholder="输入内容"
               autocomplete="off"
               value={store.inputContent}
               autofocus
