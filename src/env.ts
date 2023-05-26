@@ -8,7 +8,7 @@ export const defaultEnv = {
   CLIENT_GLOBAL_SETTINGS: {
     APIKey: "",
     password: "",
-    enterToSend: true,
+    enterToSend: false,
     DarkTheme: false
   },
   CLIENT_SESSION_SETTINGS: {
@@ -22,7 +22,7 @@ export const defaultEnv = {
   CLIENT_DEFAULT_MESSAGE: `
 - 点击头像将对话锁定作为设定角色。
 - [[/]] 选择 Prompt 预设。[[/]][[/]] 切换对话。
-- [[↑]] 编辑最近一次提问。[[Shift]][[Enter]] 换行。
+- [[↑]] 编辑最近一次提问。[[Ctrl]][[Enter]] 发送。
 `,
   CLIENT_MAX_INPUT_TOKENS: {
     "gpt-3.5-turbo": 4 * 1024,

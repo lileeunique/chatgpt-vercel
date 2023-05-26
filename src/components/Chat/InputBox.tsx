@@ -208,12 +208,15 @@ export default function ({
                   if (
                     e.key === "ArrowUp" ||
                     e.key === "ArrowDown" ||
-                    e.keyCode === 13
+                    e.key === "Enter"
                   ) {
                     e.preventDefault()
                   }
-                } else if (e.keyCode === 13) {
-                  if (!e.shiftKey && store.globalSettings.enterToSend) {
+                } else if (e.key === "Enter") {
+                  if (
+                    e.ctrlKey ||
+                    (!e.shiftKey && store.globalSettings.enterToSend)
+                  ) {
                     e.preventDefault()
                     sendMessage(undefined, actionState.fakeRole)
                   }
