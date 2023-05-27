@@ -1,4 +1,11 @@
 @media only screen and (max-width: 768px) {
+    html {
+        font-size: 14px !important;
+    }
+
+    .message pre {
+        font-size: unset;
+    }
 
     div#logo,
     .shadow-slate-5,
@@ -7,8 +14,9 @@
     }
 
     .from-red-300+.message {
-        background: #dee4e8;
+        background: #6c7a8420;
         width: 100%;
+        max-width: 100%;
         padding: 2px 12px;
         border-radius: 10px;
     }
@@ -29,11 +37,16 @@
         padding-bottom: 1em;
     }
 
+    .\<sm\:max-h-10em {
+        padding-top: 1em;
+    }
+
     .flex.absolute.items-center.justify-between {
         margin-right: 20px;
         margin-top: 20px;
         border-radius: 8px;
-        background: #d4d4d442;
+        background: #90a09f22;
+        transition: all .5s ease;
     }
 
 }
