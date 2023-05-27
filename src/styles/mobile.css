@@ -1,10 +1,10 @@
 @media only screen and (max-width: 768px) {
     html {
-        font-size: 14px !important;
+        font-size: 14.5px !important;
     }
 
     .message pre {
-        font-size: unset;
+        font-size: 0.9rem;
     }
 
     div#logo,
