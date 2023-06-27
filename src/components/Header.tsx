@@ -33,7 +33,7 @@ export default function Header() {
   const iconTitle = createMemo(() => splitEmoji(store.sessionSettings.title))
   return (
     <>
-      <div
+      {/* <div
         id="logo"
         class="pl-1em cursor-pointer inline-block"
         onClick={() => {
@@ -47,7 +47,7 @@ export default function Header() {
         >
           <div class="text-7em h-1em mb-8">{iconTitle().icon}</div>
         </Show>
-      </div>
+      </div> */}
       <header class="px-4 py-2 sticky top-0 z-99 flex justify-between items-center">
         <div
           class="flex items-center text-2xl cursor-pointer"
@@ -62,9 +62,9 @@ export default function Header() {
                 <span class="text-transparent font-extrabold bg-clip-text bg-gradient-to-r dark:from-yellow-300 from-yellow-600 dark:to-red-700 to-red-700 mr-1">
                   ChatSearch
                 </span>
-                <span class="ml-1 font-extrabold text-slate-7 dark:text-slate">
+                {/* <span class="ml-1 font-extrabold text-slate-7 dark:text-slate">
                   Vercel
-                </span>
+                </span> */}
               </>
             }
           >
