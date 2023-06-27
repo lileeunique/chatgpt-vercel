@@ -63,7 +63,7 @@ export default function SettingAction() {
       <Switch>
         <Match when={actionState.showSetting === "global"}>
           <div class="<sm:max-h-10em max-h-14em overflow-y-auto">
-            <SettingItem icon="i-ri:lock-password-line" label="网站访问密码">
+            <SettingItem icon="i-ri:lock-password-line" label="访问密码">
               <input
                 type="password"
                 value={store.globalSettings.password}
@@ -77,7 +77,7 @@ export default function SettingAction() {
                 }}
               />
             </SettingItem>
-            <SettingItem icon="i-carbon:api" label="应用接口密钥">
+            <SettingItem icon="i-carbon:password" label="接口密钥">
               <input
                 type="password"
                 value={store.globalSettings.APIKey}
@@ -91,13 +91,13 @@ export default function SettingAction() {
                 }}
               />
             </SettingItem>
-            <SettingItem icon="i-carbon:settings" label="深色主题">
+            <SettingItem icon="i-carbon:asleep" label="深色主题">
               <SwitchButton
                 checked={store.globalSettings.DarkTheme}
                 onChange={handleToggleTheme}
               />
             </SettingItem>
-            <SettingItem icon="i-carbon:keyboard" label="Enter 键发送消息">
+            <SettingItem icon="i-carbon:keyboard" label="快捷发送 ( Enter )">
               <SwitchButton
                 checked={store.globalSettings.enterToSend}
                 onChange={e => {
@@ -290,6 +290,30 @@ export default function SettingAction() {
                 icon="i-carbon:add-alt"
                 label="新的对话"
               />
+              <Show when={store.sessionId !== "index"}>
+                <ActionItem
+                  onClick={() => {
+                    if (actionState.deleteSessionConfirm) {
+                      setActionState("deleteSessionConfirm", false)
+                      delSession(store.sessionId)
+                      navigator("/", { replace: true })
+                      loadSession("index")
+                    } else {
+                      setActionState("deleteSessionConfirm", true)
+                      setTimeout(
+                        () => setActionState("deleteSessionConfirm", false),
+                        3000
+                      )
+                    }
+                  }}
+                  icon={
+                    actionState.deleteSessionConfirm
+                      ? "i-carbon:checkmark animate-bounce text-red-6 dark:text-red"
+                      : "i-carbon:trash-can"
+                  }
+                  label={actionState.deleteSessionConfirm ? "确定" : "删除对话"}
+                />
+              </Show>
             </div>
           }
         >
@@ -346,28 +370,6 @@ export default function SettingAction() {
                       : "i-carbon:link"
                   }
                   label="复制链接"
-                />
-                <ActionItem
-                  onClick={() => {
-                    if (actionState.deleteSessionConfirm) {
-                      setActionState("deleteSessionConfirm", false)
-                      delSession(store.sessionId)
-                      navigator("/", { replace: true })
-                      loadSession("index")
-                    } else {
-                      setActionState("deleteSessionConfirm", true)
-                      setTimeout(
-                        () => setActionState("deleteSessionConfirm", false),
-                        3000
-                      )
-                    }
-                  }}
-                  icon={
-                    actionState.deleteSessionConfirm
-                      ? "i-carbon:checkmark animate-bounce text-red-6 dark:text-red"
-                      : "i-carbon:trash-can"
-                  }
-                  label={actionState.deleteSessionConfirm ? "确定" : "删除对话"}
                 />
               </Show>
             </div>
