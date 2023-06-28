@@ -41,7 +41,7 @@ const roleIcons: Record<FakeRoleUnion, string> = {
   normal: "i-ri:user-3-line",
   user: "i-ri:user-3-fill bg-gradient-to-r from-red-300 to-blue-700 "
 }
-
+const passwordEnv = process.env.PASSWORD || defaultEnv.PASSWORD
 export default function SettingAction() {
   const { store, setStore } = RootStore
   const navigator = useNavigate()
@@ -50,7 +50,6 @@ export default function SettingAction() {
       messages.filter(k => k.type === "locked")
     )
   }
-  const passwordSet = process.env.PASSWORD || defaultEnv.PASSWORD
   // tree shaking
   clickOutside
   return (
@@ -77,7 +76,7 @@ export default function SettingAction() {
                 }}
               />
             </SettingItem>
-            <Show when={store.globalSettings.password === passwordSet}>
+            <Show when={store.globalSettings.password === passwordEnv}>
               <SettingItem icon="i-carbon:password" label="接口密钥">
                 <input
                   type="password"
@@ -228,7 +227,7 @@ export default function SettingAction() {
             icon="i-carbon:settings"
             label="全局设置"
           />
-          <Show when={store.globalSettings.password === passwordSet}>
+          <Show when={store.globalSettings.password === passwordEnv}>
             <ActionItem
               onClick={() => {
                 setActionState("showSetting", k =>
