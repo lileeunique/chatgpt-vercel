@@ -50,7 +50,7 @@ export default function SettingAction() {
       messages.filter(k => k.type === "locked")
     )
   }
-
+  const passwordSet = process.env.PASSWORD || defaultEnv.PASSWORD
   // tree shaking
   clickOutside
   return (
@@ -77,38 +77,40 @@ export default function SettingAction() {
                 }}
               />
             </SettingItem>
-            <SettingItem icon="i-carbon:password" label="接口密钥">
-              <input
-                type="password"
-                value={store.globalSettings.APIKey}
-                class="input-box"
-                onInput={e => {
-                  setStore(
-                    "globalSettings",
-                    "APIKey",
-                    (e.target as HTMLInputElement).value
-                  )
-                }}
-              />
-            </SettingItem>
-            <SettingItem icon="i-carbon:asleep" label="深色主题">
-              <SwitchButton
-                checked={store.globalSettings.DarkTheme}
-                onChange={handleToggleTheme}
-              />
-            </SettingItem>
-            <SettingItem icon="i-carbon:keyboard" label="快捷发送 ( Enter )">
-              <SwitchButton
-                checked={store.globalSettings.enterToSend}
-                onChange={e => {
-                  setStore(
-                    "globalSettings",
-                    "enterToSend",
-                    (e.target as HTMLInputElement).checked
-                  )
-                }}
-              />
-            </SettingItem>
+            <Show when={store.globalSettings.password === passwordSet}>
+              <SettingItem icon="i-carbon:password" label="接口密钥">
+                <input
+                  type="password"
+                  value={store.globalSettings.APIKey}
+                  class="input-box"
+                  onInput={e => {
+                    setStore(
+                      "globalSettings",
+                      "APIKey",
+                      (e.target as HTMLInputElement).value
+                    )
+                  }}
+                />
+              </SettingItem>
+              <SettingItem icon="i-carbon:asleep" label="深色主题">
+                <SwitchButton
+                  checked={store.globalSettings.DarkTheme}
+                  onChange={handleToggleTheme}
+                />
+              </SettingItem>
+              <SettingItem icon="i-carbon:keyboard" label="快捷发送 ( Enter )">
+                <SwitchButton
+                  checked={store.globalSettings.enterToSend}
+                  onChange={e => {
+                    setStore(
+                      "globalSettings",
+                      "enterToSend",
+                      (e.target as HTMLInputElement).checked
+                    )
+                  }}
+                />
+              </SettingItem>
+            </Show>
           </div>
           <hr class="my-1 bg-slate-5 bg-op-15 border-none h-1px"></hr>
         </Match>
@@ -226,15 +228,17 @@ export default function SettingAction() {
             icon="i-carbon:settings"
             label="全局设置"
           />
-          <ActionItem
-            onClick={() => {
-              setActionState("showSetting", k =>
-                k !== "session" ? "session" : "none"
-              )
-            }}
-            icon="i-carbon:settings-services"
-            label="对话设置"
-          />
+          <Show when={store.globalSettings.password === passwordSet}>
+            <ActionItem
+              onClick={() => {
+                setActionState("showSetting", k =>
+                  k !== "session" ? "session" : "none"
+                )
+              }}
+              icon="i-carbon:settings-services"
+              label="对话设置"
+            />
+          </Show>
         </div>
         <Switch
           fallback={
