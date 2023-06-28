@@ -41,7 +41,7 @@ const roleIcons: Record<FakeRoleUnion, string> = {
   normal: "i-ri:user-3-line",
   user: "i-ri:user-3-fill bg-gradient-to-r from-red-300 to-blue-700 "
 }
-const passwordEnv = process.env.PASSWORD || defaultEnv.PASSWORD
+
 export default function SettingAction() {
   const { store, setStore } = RootStore
   const navigator = useNavigate()
@@ -76,7 +76,7 @@ export default function SettingAction() {
                 }}
               />
             </SettingItem>
-            <Show when={store.globalSettings.password === passwordEnv}>
+
               <SettingItem icon="i-carbon:password" label="接口密钥">
                 <input
                   type="password"
@@ -109,7 +109,7 @@ export default function SettingAction() {
                   }}
                 />
               </SettingItem>
-            </Show>
+
           </div>
           <hr class="my-1 bg-slate-5 bg-op-15 border-none h-1px"></hr>
         </Match>
@@ -227,7 +227,7 @@ export default function SettingAction() {
             icon="i-carbon:settings"
             label="全局设置"
           />
-          <Show when={store.globalSettings.password === passwordEnv}>
+
             <ActionItem
               onClick={() => {
                 setActionState("showSetting", k =>
@@ -237,7 +237,7 @@ export default function SettingAction() {
               icon="i-carbon:settings-services"
               label="对话设置"
             />
-          </Show>
+
         </div>
         <Switch
           fallback={
