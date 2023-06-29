@@ -4,7 +4,7 @@ import { createStore } from "solid-js/store"
 import { defaultEnv } from "~/env"
 import { clickOutside } from "~/hooks"
 import { RootStore, loadSession } from "~/store"
-import type { ChatMessage, Model } from "~/types"
+import type { ChatMessage, SimpleModel } from "~/types"
 import {
   copyToClipboard,
   dateFormat,
@@ -50,6 +50,7 @@ export default function SettingAction() {
       messages.filter(k => k.type === "locked")
     )
   }
+
   // tree shaking
   clickOutside
   return (
@@ -62,7 +63,7 @@ export default function SettingAction() {
       <Switch>
         <Match when={actionState.showSetting === "global"}>
           <div class="<sm:max-h-10em max-h-14em overflow-y-auto">
-            <SettingItem icon="i-ri:lock-password-line" label="访问密码">
+            <SettingItem icon="i-ri:lock-password-line" label="网站访问密码">
               <input
                 type="password"
                 value={store.globalSettings.password}
@@ -76,40 +77,38 @@ export default function SettingAction() {
                 }}
               />
             </SettingItem>
-
-              <SettingItem icon="i-carbon:password" label="接口密钥">
-                <input
-                  type="password"
-                  value={store.globalSettings.APIKey}
-                  class="input-box"
-                  onInput={e => {
-                    setStore(
-                      "globalSettings",
-                      "APIKey",
-                      (e.target as HTMLInputElement).value
-                    )
-                  }}
-                />
-              </SettingItem>
-              <SettingItem icon="i-carbon:asleep" label="深色主题">
+            <SettingItem icon="i-carbon:api" label="API KEY">
+              <input
+                type="password"
+                value={store.globalSettings.APIKey}
+                class="input-box"
+                onInput={e => {
+                  setStore(
+                    "globalSettings",
+                    "APIKey",
+                    (e.target as HTMLInputElement).value
+                  )
+                }}
+              />
+            </SettingItem>
+            <SettingItem icon="i-carbon:asleep" label="使用深色主题">
                 <SwitchButton
                   checked={store.globalSettings.DarkTheme}
                   onChange={handleToggleTheme}
                 />
               </SettingItem>
-              <SettingItem icon="i-carbon:keyboard" label="快捷发送 ( Enter )">
-                <SwitchButton
-                  checked={store.globalSettings.enterToSend}
-                  onChange={e => {
-                    setStore(
-                      "globalSettings",
-                      "enterToSend",
-                      (e.target as HTMLInputElement).checked
-                    )
-                  }}
-                />
-              </SettingItem>
-
+            <SettingItem icon="i-carbon:keyboard" label="Enter 快捷发送">
+              <SwitchButton
+                checked={store.globalSettings.enterToSend}
+                onChange={e => {
+                  setStore(
+                    "globalSettings",
+                    "enterToSend",
+                    (e.target as HTMLInputElement).checked
+                  )
+                }}
+              />
+            </SettingItem>
           </div>
           <hr class="my-1 bg-slate-5 bg-op-15 border-none h-1px"></hr>
         </Match>
@@ -136,30 +135,26 @@ export default function SettingAction() {
             </Show>
             <SettingItem
               icon="i-carbon:machine-learning-model"
-              label="对话模型选择"
+              label="当前对话模型"
             >
               <Selector
                 class="max-w-150px"
-                value={store.sessionSettings.APIModel}
+                value={store.sessionSettings.model}
                 onChange={e => {
                   setStore(
                     "sessionSettings",
-                    "APIModel",
-                    (e.target as HTMLSelectElement).value as Model
+                    "model",
+                    (e.target as HTMLSelectElement).value as SimpleModel
                   )
                 }}
                 options={[
                   {
-                    value: "gpt-3.5-turbo",
-                    label: "gpt-3.5-turbo(4k)"
+                    value: "gpt-3.5",
+                    label: "gpt-3.5(auto)"
                   },
                   {
                     value: "gpt-4",
-                    label: "gpt-4(8k)"
-                  },
-                  {
-                    value: "gpt-4-32k",
-                    label: "gpt-4(32k)"
+                    label: "gpt-4(auto)"
                   }
                 ]}
               />
@@ -227,17 +222,15 @@ export default function SettingAction() {
             icon="i-carbon:settings"
             label="全局设置"
           />
-
-            <ActionItem
-              onClick={() => {
-                setActionState("showSetting", k =>
-                  k !== "session" ? "session" : "none"
-                )
-              }}
-              icon="i-carbon:settings-services"
-              label="对话设置"
-            />
-
+          <ActionItem
+            onClick={() => {
+              setActionState("showSetting", k =>
+                k !== "session" ? "session" : "none"
+              )
+            }}
+            icon="i-carbon:settings-services"
+            label="对话设置"
+          />
         </div>
         <Switch
           fallback={
@@ -272,6 +265,30 @@ export default function SettingAction() {
                 }
                 label={actionState.clearSessionConfirm ? "确定" : "清空对话"}
               />
+              <Show when={store.sessionId !== "index"}>
+              <ActionItem
+                  onClick={() => {
+                    if (actionState.deleteSessionConfirm) {
+                      setActionState("deleteSessionConfirm", false)
+                      delSession(store.sessionId)
+                      navigator("/", { replace: true })
+                      loadSession("index")
+                    } else {
+                      setActionState("deleteSessionConfirm", true)
+                      setTimeout(
+                        () => setActionState("deleteSessionConfirm", false),
+                        3000
+                      )
+                    }
+                  }}
+                  icon={
+                    actionState.deleteSessionConfirm
+                      ? "i-carbon:checkmark animate-bounce text-red-6 dark:text-red"
+                      : "i-carbon:trash-can"
+                  }
+                  label={actionState.deleteSessionConfirm ? "确定" : "删除对话"}
+              />
+              </Show>
               <ActionItem
                 onClick={() => {
                   let sessionID: string
@@ -293,30 +310,6 @@ export default function SettingAction() {
                 icon="i-carbon:add-alt"
                 label="新的对话"
               />
-              <Show when={store.sessionId !== "index"}>
-                <ActionItem
-                  onClick={() => {
-                    if (actionState.deleteSessionConfirm) {
-                      setActionState("deleteSessionConfirm", false)
-                      delSession(store.sessionId)
-                      navigator("/", { replace: true })
-                      loadSession("index")
-                    } else {
-                      setActionState("deleteSessionConfirm", true)
-                      setTimeout(
-                        () => setActionState("deleteSessionConfirm", false),
-                        3000
-                      )
-                    }
-                  }}
-                  icon={
-                    actionState.deleteSessionConfirm
-                      ? "i-carbon:checkmark animate-bounce text-red-6 dark:text-red"
-                      : "i-carbon:trash-can"
-                  }
-                  label={actionState.deleteSessionConfirm ? "确定" : "删除对话"}
-                />
-              </Show>
             </div>
           }
         >
@@ -336,7 +329,7 @@ export default function SettingAction() {
           </Match>
           <Match when={actionState.showSetting === "session"}>
             <div class="flex">
-              <ActionItem
+            <ActionItem
                 onClick={async () => {
                   setActionState("genImg", "loading")
                   await exportJpg()
@@ -422,7 +415,7 @@ async function exportJpg() {
       const url = await toJpeg(messageContainer)
       const a = document.createElement("a")
       a.href = url
-      a.download = `ChatSearch-${dateFormat(new Date(), "HH-MM-SS")}.jpg`
+      a.download = `${dateFormat(new Date(), "HH-MM-SS")}.jpg`
       a.click()
     }
     if (!isMobile() && navigator.clipboard) {
@@ -471,7 +464,7 @@ async function exportData() {
   a.href = URL.createObjectURL(
     new Blob([JSON.stringify(localStorage)], { type: "application/json" })
   )
-  a.download = `ChatSearch-${dateFormat(new Date(), "HH-MM-SS")}.json`
+  a.download = `${dateFormat(new Date(), "HH-MM-SS")}.json`
   a.click()
 }
 

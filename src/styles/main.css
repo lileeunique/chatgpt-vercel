@@ -4,6 +4,10 @@
 @import url(./clipboard.css);
 @import url(./mobile.css);
 
+body::-webkit-scrollbar {
+  width: 0;
+}
+
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;

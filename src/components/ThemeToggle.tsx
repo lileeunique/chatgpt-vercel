@@ -4,7 +4,6 @@ import { LocalStorageKey } from "~/types"
 import { RootStore } from "~/store"
 
 export function handleToggleTheme() {
-  const { setStore } = RootStore
   const element = document.documentElement
   element.classList.toggle("dark")
   const isDark = element.classList.contains("dark")
@@ -12,6 +11,7 @@ export function handleToggleTheme() {
     ?.querySelector('meta[name="theme-color"]')
     ?.setAttribute("content", isDark ? "#16161a" : "#f6f8fa")
   localStorage.setItem(LocalStorageKey.THEME, isDark ? "dark" : "light")
+  const { setStore } = RootStore
   setStore("globalSettings", "DarkTheme", isDark)
 }
 

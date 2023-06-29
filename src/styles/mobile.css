@@ -1,3 +1,10 @@
+div#logo,
+.shadow-slate-5,
+[tooltip]::after,
+header.px-4.py-2.sticky.top-0.z-99.flex.justify-between.items-center {
+    display: none !important;
+}
+
 @media only screen and (max-width: 768px) {
 
     html {
@@ -10,12 +17,6 @@
 
     .message pre {
         font-size: 0.9rem;
-    }
-
-    div#logo,
-    .shadow-slate-5,
-    header.px-4.py-2.sticky.top-0.z-99.flex.justify-between.items-center {
-        display: none !important;
     }
 
     .from-red-300+.message {

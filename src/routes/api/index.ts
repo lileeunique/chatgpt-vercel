@@ -40,8 +40,8 @@ export const baseURL =
   process.env.NO_GFW !== "false"
     ? defaultEnv.OPENAI_API_BASE_URL
     : (
-      process.env.OPENAI_API_BASE_URL || defaultEnv.OPENAI_API_BASE_URL
-    ).replace(/^https?:\/\//, "")
+        process.env.OPENAI_API_BASE_URL || defaultEnv.OPENAI_API_BASE_URL
+      ).replace(/^https?:\/\//, "")
 
 // + 作用是将字符串转换为数字
 const timeout = isNaN(+process.env.TIMEOUT!)
@@ -76,7 +76,7 @@ export async function POST({ request }: APIEvent) {
           )
           return new Response(await genBillingsTable(billings))
         } else {
-          throw new Error("未填写应用接口密钥。")
+          throw new Error("没有填写 API key 或拼写错误。")
         }
       } else if (content.startsWith("sk-")) {
         const billings = await Promise.all(
@@ -88,7 +88,7 @@ export async function POST({ request }: APIEvent) {
 
     const apiKey = randomKey(splitKeys(key))
 
-    if (!apiKey) throw new Error("无效的应用接口密钥。")
+    if (!apiKey) throw new Error("没有填写 API key 或拼写错误。")
 
     const encoder = new TextEncoder()
     const decoder = new TextDecoder()
@@ -103,7 +103,7 @@ export async function POST({ request }: APIEvent) {
         timeout,
         method: "POST",
         body: JSON.stringify({
-          model: model,
+          model,
           messages: messages.map(k => ({ role: k.role, content: k.content })),
           temperature,
           stream: true
