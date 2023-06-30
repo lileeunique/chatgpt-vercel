@@ -230,8 +230,8 @@ export default function ({
               <div
                 class="absolute flex text-1em items-center"
                 classList={{
-                  "right-2.5em bottom-1em": height() === defaultInputBoxHeight,
-                  "right-0.8em top-0.8em": height() !== defaultInputBoxHeight
+                  "right-2.5em bottom-1em": height() <= defaultInputBoxHeight,
+                  "right-0.8em top-0.8em": height() > defaultInputBoxHeight
                 }}
               >
                 <button
